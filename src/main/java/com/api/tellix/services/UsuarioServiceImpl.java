@@ -15,4 +15,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
     public UsuarioServiceImpl(BaseRepository<Usuario, Long> baseRepository){
         super(baseRepository);
     }
+
+    public boolean existsByCorreo(String correo) throws Exception{
+        try {
+            boolean usuario = usuarioRepository.existsByCorreo(correo);
+            return usuario;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }
