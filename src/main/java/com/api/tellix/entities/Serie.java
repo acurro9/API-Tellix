@@ -1,11 +1,19 @@
 package com.api.tellix.entities;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -15,9 +23,22 @@ import org.hibernate.envers.Audited;
 @Getter
 @Setter
 @Audited
-public class Serie extends Contenido{
+public class Serie extends Base{
+    @Column(name = "nombre")
+    private String nombre;
 
-    @Column(name = "temporadas")
-    private int temporadas;
+    @Column(name = "visible")
+    private boolean visible;
+
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "serie_categoria",
+        joinColumns = @ JoinColumn (name = "serie_id"),
+        inverseJoinColumns = @JoinColumn(name = "categoria_id")
+        )
+    private List<Categoria> categorias = new ArrayList<Categoria>();
     
 }

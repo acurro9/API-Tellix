@@ -7,6 +7,5 @@ import com.api.tellix.entities.Usuario;
 @Repository
 public interface UsuarioRepository extends BaseRepository <Usuario, Long>{
     
-    boolean existsByCorreo(String correo);
-    
+    boolean existsByCorreo(String filtro);
 }

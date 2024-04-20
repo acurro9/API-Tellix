@@ -36,7 +36,7 @@ public class Perfil extends Base{
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "watchlist_serie",
-        joinColumns = @JoinColumn(name = "usuario_id"),
+        joinColumns = @JoinColumn(name = "perfil_id"),
         inverseJoinColumns = @JoinColumn(name = "serie_id")
         )
     private List<Serie> series = new ArrayList<Serie>();
@@ -44,7 +44,7 @@ public class Perfil extends Base{
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "watchlist_pelicula",
-        joinColumns = @JoinColumn(name = "usuario_id"),
+        joinColumns = @JoinColumn(name = "perfil_id"),
         inverseJoinColumns = @JoinColumn(name = "pelicula_id")
         )
     private List<Pelicula> peliculas = new ArrayList<Pelicula>();

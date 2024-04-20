@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioServiceImpl> {
 
     @GetMapping("/existsCorreo")
-    public ResponseEntity<?> existsCorreo(@RequestParam String correo){
+    public ResponseEntity<?> existsCorreo(@RequestParam String filtro){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(servicio.existsByCorreo(correo));
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.existsByCorreo(filtro));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

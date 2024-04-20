@@ -27,6 +27,9 @@ public class Capitulo  extends Base{
     @Column(name = "duracion")
     private int duracion;
 
+    @Column(name = "descripcion")
+    private String descripcion;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_temporada")
     private Temporada temporada;

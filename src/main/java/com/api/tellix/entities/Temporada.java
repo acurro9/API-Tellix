@@ -23,9 +23,6 @@ public class Temporada extends Base{
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "capitulos")
-    private int capitulos;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_serie")
     private Serie serie;
