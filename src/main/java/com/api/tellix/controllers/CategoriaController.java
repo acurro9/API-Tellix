@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaServiceImpl>{
     
     @GetMapping("/search")
-    public ResponseEntity<?> findByName(@RequestParam String filtro){
+    public ResponseEntity<?> findByName(@RequestParam String name){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(servicio.findByNombreContaining(filtro));
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.findByNombreContaining(name));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

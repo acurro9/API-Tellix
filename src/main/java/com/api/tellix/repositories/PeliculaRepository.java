@@ -14,7 +14,7 @@ public interface PeliculaRepository extends BaseRepository <Pelicula, Long>{
     List<Pelicula> findByNombreContaining(String filtro);
 
     @Query(
-        value = "select pelicula.* from pelicula where id in (select pelicula_id from pelicula_categoria where categoria_id = %:filtro%)",
+        value = "select pelicula.* from pelicula where id in (select pelicula_id from pelicula_categoria where categoria_id = :filtro)",
         nativeQuery = true
     )
     List<Pelicula> findByCatID(Long filtro);

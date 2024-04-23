@@ -6,10 +6,10 @@ import com.api.tellix.services.PerfilServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,20 +20,41 @@ import org.springframework.web.bind.annotation.RestController;
 public class PerfilController extends BaseControllerImpl<Perfil, PerfilServiceImpl>{
     
     @GetMapping("/profiles")
-    public ResponseEntity<?> searchPerfil(@RequestParam Long filtro){
+    public ResponseEntity<?> searchPerfil(@RequestParam Long usuID){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(servicio.searchPerfil(filtro));
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.searchPerfil(usuID));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
     }
     
-    // @PutMapping("/addWatchList/{id}")
-    // public ResponseEntity<?> addWatchList(@PathVariable Long id, @RequestBody Perfil perfil){
-    //     try{
-    //         return ResponseEntity.status(HttpStatus.OK).body(servicio.addWatchList(id, perfil));
-    //     } catch(Exception e) {
-    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
-    //     }
-    // }
+    @PostMapping("/watchList/serie")
+    public ResponseEntity<?> addSerie(@RequestParam Long perfilID, @RequestParam Long serieID){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.addSerie(perfilID, serieID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @PostMapping("/watchList/film")
+    public ResponseEntity<?> addPelicula(@RequestParam Long perfilID, @RequestParam Long peliculaID){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.addPelicula(perfilID, peliculaID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+     public ResponseEntity<?> delete(@PathVariable Long id) {
+         try{
+            servicio.removeSerie(id);
+            servicio.removePelicula(id);
+            servicio.removeUsuFK(id);
+             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicio.delete(id));
+         } catch(Exception e) {
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+         }
+     }
 }
