@@ -1,11 +1,8 @@
 package com.api.tellix.controllers;
 
-import com.api.tellix.controllers.PerfilController;
 import com.api.tellix.entities.Usuario;
 import com.api.tellix.services.UsuarioServiceImpl;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

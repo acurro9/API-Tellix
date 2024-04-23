@@ -1,16 +1,11 @@
 package com.api.tellix.services;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.api.tellix.entities.Pelicula;
 import com.api.tellix.entities.Perfil;
 import com.api.tellix.repositories.BaseRepository;
-import com.api.tellix.repositories.PeliculaRepository;
 import com.api.tellix.repositories.PerfilRepository;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

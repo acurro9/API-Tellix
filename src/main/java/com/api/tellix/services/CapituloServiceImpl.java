@@ -9,6 +9,7 @@ import com.api.tellix.repositories.CapituloRepository;
 
 @Service
 public class CapituloServiceImpl extends BaseServiceImpl<Capitulo, Long> implements CapituloService{
+    @SuppressWarnings("unused")
     @Autowired
     private CapituloRepository capituloRepository;
 
