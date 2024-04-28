@@ -37,6 +37,9 @@ public class Pelicula extends Base{
     @Column(name = "duracion")
     private int duracion;
 
+    @Column(name = "imagen")
+    private String imagen;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "pelicula_categoria",

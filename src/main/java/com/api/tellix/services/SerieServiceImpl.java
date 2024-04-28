@@ -3,6 +3,8 @@ package com.api.tellix.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.api.tellix.entities.Serie;
@@ -29,7 +31,18 @@ public class SerieServiceImpl extends BaseServiceImpl<Serie, Long> implements Se
     @Transactional
     public List<Serie> findByCatID(Long filtro) throws Exception{
         try {
-            List<Serie> series = serieRepository.findByCatID(filtro);
+            List<Serie> series = serieRepository.findByCategorias_Id(filtro);
+            return series;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<Serie> findByCatID(Long filtro, Pageable pageable) throws Exception{
+        try {
+            Page<Serie> series = serieRepository.findByCategorias_Id(filtro, pageable);
             return series;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -41,6 +54,17 @@ public class SerieServiceImpl extends BaseServiceImpl<Serie, Long> implements Se
     public List<Serie> findByName(String filtro) throws Exception{
         try{
             List<Serie> series = serieRepository.findByNombreContaining(filtro);
+            return series; 
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<Serie> findByName(String filtro, Pageable pageable) throws Exception{
+        try{
+            Page<Serie> series = serieRepository.findByNombreContaining(filtro, pageable);
             return series; 
         } catch (Exception e) {
             throw new Exception(e.getMessage());

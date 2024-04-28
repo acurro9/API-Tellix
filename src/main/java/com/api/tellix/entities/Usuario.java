@@ -50,4 +50,5 @@ public class Usuario extends Base{
         inverseJoinColumns = @JoinColumn(name = "perfil_id")
         )
     private List<Perfil> perfiles = new ArrayList<Perfil>();
+
 }

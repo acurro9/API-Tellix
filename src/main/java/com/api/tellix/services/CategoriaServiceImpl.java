@@ -3,6 +3,8 @@ package com.api.tellix.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.api.tellix.entities.Categoria;
@@ -30,6 +32,17 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
     public List<Categoria> findByNombreContaining(String filtro) throws Exception{
         try {
             List<Categoria> categoria = categoriaRepository.findByNombreContaining(filtro);
+            return categoria;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<Categoria> findByNombreContaining(String filtro, Pageable pageable) throws Exception{
+        try {
+            Page<Categoria> categoria = categoriaRepository.findByNombreContaining(filtro, pageable);
             return categoria;
         } catch (Exception e) {
             throw new Exception(e.getMessage());

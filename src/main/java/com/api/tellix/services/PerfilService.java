@@ -9,6 +9,8 @@ public interface PerfilService extends BaseService<Perfil, Long>{
     boolean addSerie(Long perfilID, Long SerieID) throws Exception;
     boolean addPelicula(Long perfilID, Long peliculaID) throws Exception;
     boolean removeSerie(Long perfilID) throws Exception;
+    boolean removeOneSerie(Long perfilID, Long serieID) throws Exception;
     boolean removePelicula(Long perfilID) throws Exception;
+    boolean removeOnePelicula(Long perfilID, Long peliculaID) throws Exception;
     boolean removeUsuFK(Long perfilID) throws Exception;
 }

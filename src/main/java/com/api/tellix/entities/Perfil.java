@@ -31,7 +31,7 @@ public class Perfil extends Base{
     private String nombre;
 
     @Column(name = "imagen")
-    private Blob imagen;
+    private String imagen;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

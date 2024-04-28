@@ -66,6 +66,22 @@ public class PerfilServiceImpl extends BaseServiceImpl<Perfil, Long> implements 
 
     @Override
     @Transactional
+    public boolean removeOneSerie(Long perfilID, Long serieID) {
+        boolean resultado;
+        int res = entityManager.createNativeQuery("DELETE FROM watchlist_serie WHERE perfil_id = ? and serie_id = ?")
+        .setParameter(1, perfilID)
+        .setParameter(2, serieID)
+        .executeUpdate();
+        if(res == 1){
+            resultado = true;
+        } else{
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    @Override
+    @Transactional
     public boolean addPelicula(Long perfilID, Long peliculaID) throws Exception{
         boolean resultado;
         int res = entityManager.createNativeQuery("INSERT INTO watchlist_pelicula (perfil_id, pelicula_id) VALUES (?, ?)")
@@ -86,6 +102,22 @@ public class PerfilServiceImpl extends BaseServiceImpl<Perfil, Long> implements 
         boolean resultado;
         int res = entityManager.createNativeQuery("DELETE FROM watchlist_pelicula WHERE perfil_id = ?")
         .setParameter(1, perfilID)
+        .executeUpdate();
+        if(res == 1){
+            resultado = true;
+        } else{
+            resultado = false;
+        }
+        return resultado;
+    }
+    
+    @Override
+    @Transactional
+    public boolean removeOnePelicula(Long perfilID, Long peliculaID) {
+        boolean resultado;
+        int res = entityManager.createNativeQuery("DELETE FROM watchlist_pelicula WHERE perfil_id = ? and pelicula_id = ?")
+        .setParameter(1, perfilID)
+        .setParameter(2, peliculaID)
         .executeUpdate();
         if(res == 1){
             resultado = true;

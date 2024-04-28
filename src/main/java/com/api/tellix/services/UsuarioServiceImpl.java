@@ -3,13 +3,17 @@ package com.api.tellix.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
+import com.api.tellix.entities.Perfil;
 import com.api.tellix.entities.Usuario;
 import com.api.tellix.repositories.BaseRepository;
 import com.api.tellix.repositories.UsuarioRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -48,7 +52,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
 
     @Override
     @Transactional
-    public boolean addPerfil(Long usuID, Long perfilID) {
+    public boolean addPerfil(Long usuID, Long perfilID)throws Exception{
+        try{
         boolean resultado;
         int res = entityManager.createNativeQuery("INSERT INTO perfil_usuario (usuario_id, perfil_id) VALUES (?, ?)")
         .setParameter(1, usuID)
@@ -60,6 +65,112 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
             resultado = false;
         }
         return resultado;
+    }catch (Exception e) {
+        throw new Exception(e.getMessage());
     }
+    }
+
+    @Override
+    @Transactional
+    public Long crearPerfil(String nombre)throws Exception{
+        try{
+        int res = entityManager.createNativeQuery("INSERT INTO perfil (`nombre`) VALUES (?);")
+        .setParameter(1, nombre)
+        .executeUpdate();
+        
+        Query selectQuery = entityManager.createNativeQuery("SELECT id FROM perfil WHERE id = (SELECT LAST_INSERT_ID());");
+        List<Perfil> resultList = selectQuery.getResultList();
+
+        Long insertedId = (Long) selectQuery.getSingleResult(); 
+
+        return insertedId;
+    }catch (Exception e) {
+        throw new Exception(e.getMessage());
+    }
+    }
+
+    @Override
+    @Transactional
+    public boolean bloqUsu(Long id, boolean bloq)throws Exception{
+        try{
+        boolean resultado;
+        int res = entityManager.createNativeQuery("UPDATE usuario SET bloqueado = ? WHERE id = ?;")
+        .setParameter(1, bloq)
+        .setParameter(2, id)
+        .executeUpdate();
+
+        if(res == 1){
+            resultado = true;
+        } else{
+            resultado = false;
+        }
+        return resultado;
+    }catch (Exception e) {
+        throw new Exception(e.getMessage());
+    }
+    }
+
+    @Override
+    @Transactional
+    public boolean suscripcion(Long id, boolean bloq)throws Exception{
+        try{
+        boolean resultado;
+        int res = entityManager.createNativeQuery("UPDATE usuario SET suscripcion = ? WHERE id = ?;")
+        .setParameter(1, bloq)
+        .setParameter(2, id)
+        .executeUpdate();
+
+        if(res == 1){
+            resultado = true;
+        } else{
+            resultado = false;
+        }
+        return resultado;
+    }catch (Exception e) {
+        throw new Exception(e.getMessage());
+    }
+    }
+
+    @Override
+    @Transactional
+    public Usuario obtainUsu(String mail) throws Exception{
+        try{
+            Usuario usuario = usuarioRepository.obtainUsu(mail);
+            return usuario;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean checkBloq(String mail) throws Exception{
+        try{
+            boolean resultado;
+            boolean resQuery = usuarioRepository.checkBloq(mail);
+            
+            return resQuery;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public String encryptPassword(String password) throws Exception{
+        try{
+            return BCrypt.hashpw(password, BCrypt.gensalt());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean verifyPassword(String originalPassword, String hashPassword) throws Exception{
+        try{
+            return BCrypt.checkpw(originalPassword, hashPassword);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    };
 }
 

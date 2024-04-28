@@ -2,7 +2,6 @@ package com.api.tellix.controllers;
 
 import com.api.tellix.entities.Perfil;
 import com.api.tellix.services.PerfilServiceImpl;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +27,7 @@ public class PerfilController extends BaseControllerImpl<Perfil, PerfilServiceIm
         }
     }
     
-    @PostMapping("/watchList/serie")
+    @PostMapping("/watchList/add/serie")
     public ResponseEntity<?> addSerie(@RequestParam Long perfilID, @RequestParam Long serieID){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.addSerie(perfilID, serieID));
@@ -36,11 +35,28 @@ public class PerfilController extends BaseControllerImpl<Perfil, PerfilServiceIm
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
     }
+    @PostMapping("/watchList/delete/serie")
+    public ResponseEntity<?> removeSerie(@RequestParam Long perfilID, @RequestParam Long serieID){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.removeOneSerie(perfilID, serieID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
 
-    @PostMapping("/watchList/film")
+    @PostMapping("/watchList/add/film")
     public ResponseEntity<?> addPelicula(@RequestParam Long perfilID, @RequestParam Long peliculaID){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.addPelicula(perfilID, peliculaID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @PostMapping("/watchList/delete/film")
+    public ResponseEntity<?> removePelicula(@RequestParam Long perfilID, @RequestParam Long peliculaID){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.removeOnePelicula(perfilID, peliculaID));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

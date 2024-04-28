@@ -24,5 +24,4 @@ public interface PerfilRepository extends BaseRepository <Perfil, Long>{
         nativeQuery = true
     )
     boolean addPelicula(Long perfilID, Long peliculaID);
-
 }

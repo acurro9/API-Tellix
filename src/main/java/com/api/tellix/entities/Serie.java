@@ -30,6 +30,9 @@ public class Serie extends Base{
     @Column(name = "visible")
     private boolean visible;
 
+    @Column(name = "imagen")
+    private String imagen;
+
     @Column(name = "descripcion")
     private String descripcion;
 

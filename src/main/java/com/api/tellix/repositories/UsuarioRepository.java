@@ -17,4 +17,18 @@ public interface UsuarioRepository extends BaseRepository <Usuario, Long>{
         nativeQuery = true
     )
     List<Long> searchByUsuID(Long filtro);
+
+    @Query(
+        value = "select * from usuario where correo like :correo",
+        nativeQuery = true
+    )
+    Usuario obtainUsu(String correo);
+
+    @Query(
+        value = "select bloqueado from usuario where correo like :correo",
+        nativeQuery = true
+    )
+    boolean checkBloq(String correo);
+
+    
 }

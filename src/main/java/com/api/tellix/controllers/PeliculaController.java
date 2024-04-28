@@ -2,6 +2,8 @@ package com.api.tellix.controllers;
 
 import com.api.tellix.entities.Pelicula;
 import com.api.tellix.services.PeliculaServiceImpl;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,10 +29,28 @@ public class PeliculaController extends BaseControllerImpl<Pelicula, PeliculaSer
         }
     }
 
+    @GetMapping("/searchCat/paged")
+    public ResponseEntity<?> searchByCat(@RequestParam Long catID, Pageable pageable){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.findByCatID(catID, pageable));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
     @GetMapping("/search")
     public ResponseEntity<?> existsByName(@RequestParam String name){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.findByName(name));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @GetMapping("/search/paged")
+    public ResponseEntity<?> existsByName(@RequestParam String name, Pageable pageable){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.findByName(name, pageable));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

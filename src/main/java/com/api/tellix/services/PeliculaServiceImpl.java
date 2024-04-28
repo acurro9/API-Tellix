@@ -3,6 +3,8 @@ package com.api.tellix.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.api.tellix.entities.Pelicula;
@@ -29,7 +31,18 @@ public class PeliculaServiceImpl extends BaseServiceImpl<Pelicula, Long> impleme
     @Transactional
     public List<Pelicula> findByCatID(Long filtro) throws Exception{
         try {
-            List<Pelicula> peliculas = peliculaRepository.findByCatID(filtro);
+            List<Pelicula> peliculas = peliculaRepository.findByCategorias_Id(filtro);
+            return peliculas;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<Pelicula> findByCatID(Long filtro, Pageable pageable) throws Exception{
+        try {
+            Page<Pelicula> peliculas = peliculaRepository.findByCategorias_Id(filtro, pageable);
             return peliculas;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -41,6 +54,17 @@ public class PeliculaServiceImpl extends BaseServiceImpl<Pelicula, Long> impleme
     public List<Pelicula> findByName(String filtro) throws Exception{
         try{
             List<Pelicula> peliculas = peliculaRepository.findByNombreContaining(filtro);
+            return peliculas; 
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<Pelicula> findByName(String filtro, Pageable pageable) throws Exception{
+        try{
+            Page<Pelicula> peliculas = peliculaRepository.findByNombreContaining(filtro, pageable);
             return peliculas; 
         } catch (Exception e) {
             throw new Exception(e.getMessage());
