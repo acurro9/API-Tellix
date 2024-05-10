@@ -33,8 +33,18 @@ public class Serie extends Base{
     @Column(name = "imagen")
     private String imagen;
 
-    @Column(name = "descripcion")
+    @Column(name = "descripcion",
+    columnDefinition = "TEXT")
     private String descripcion;
+
+    @Column(name = "año")
+    private String año;
+    
+    @Column(
+            name = "actores",
+            columnDefinition = "TEXT"
+            )
+    private String actores;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -44,4 +54,11 @@ public class Serie extends Base{
         )
     private List<Categoria> categorias = new ArrayList<Categoria>();
     
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "serie_familia",
+        joinColumns = @ JoinColumn (name = "serie_id"),
+        inverseJoinColumns = @JoinColumn(name = "familia_id")
+        )
+    private List<Familia> familia = new ArrayList<Familia>();
 }

@@ -31,7 +31,8 @@ public class Pelicula extends Base{
     @Column(name = "visible")
     private boolean visible;
 
-    @Column(name = "descripcion")
+    @Column(name = "descripcion",
+    columnDefinition = "TEXT")
     private String descripcion;
 
     @Column(name = "duracion")
@@ -40,6 +41,18 @@ public class Pelicula extends Base{
     @Column(name = "imagen")
     private String imagen;
 
+    @Column(name = "año")
+    private String año;
+
+    @Column(
+            name = "actores",
+            columnDefinition = "TEXT"
+            )
+    private String actores;
+
+    @Column(name = "link")
+    private String link;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "pelicula_categoria",
@@ -47,4 +60,12 @@ public class Pelicula extends Base{
         inverseJoinColumns = @JoinColumn(name = "categoria_id")
         )
     private List<Categoria> categorias = new ArrayList<Categoria>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "pelicula_familia",
+        joinColumns = @ JoinColumn (name = "pelicula_id"),
+        inverseJoinColumns = @JoinColumn(name = "familia_id")
+        )
+    private List<Familia> familia = new ArrayList<Familia>();
 }

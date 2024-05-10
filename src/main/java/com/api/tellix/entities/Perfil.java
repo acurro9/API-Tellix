@@ -1,11 +1,7 @@
 package com.api.tellix.entities;
-
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.envers.Audited;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

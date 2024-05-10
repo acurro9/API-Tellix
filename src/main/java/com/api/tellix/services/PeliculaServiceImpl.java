@@ -88,6 +88,21 @@ public class PeliculaServiceImpl extends BaseServiceImpl<Pelicula, Long> impleme
 
     @Override
     @Transactional
+    public boolean removeFam(Long peliculaID) throws Exception {
+        boolean resultado;
+        int res = entityManager.createNativeQuery("DELETE FROM pelicula_familia WHERE pelicula_id = ?")
+        .setParameter(1, peliculaID)
+        .executeUpdate();
+        if(res == 1){
+            resultado = true;
+        } else{
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    @Override
+    @Transactional
     public boolean removeCat(Long peliculaID) throws Exception{
         boolean resultado;
         int res = entityManager.createNativeQuery("DELETE FROM pelicula_categoria WHERE pelicula_id = ?")
@@ -115,5 +130,25 @@ public class PeliculaServiceImpl extends BaseServiceImpl<Pelicula, Long> impleme
             resultado = false;
         }
         return resultado;
+    }
+
+    @Override
+    @Transactional
+    public boolean addFam(Long peliculaID, Long familiaID)throws Exception{
+        try{
+            boolean resultado;
+            int res = entityManager.createNativeQuery("INSERT INTO pelicula_familia (pelicula_id, familia_id) VALUES (?, ?)")
+            .setParameter(1, peliculaID)
+            .setParameter(2, familiaID)
+            .executeUpdate();
+            if(res == 1){
+                resultado = true;
+            } else{
+                resultado = false;
+            }
+            return resultado;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }
