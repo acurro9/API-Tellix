@@ -75,6 +75,7 @@ public class SerieController extends BaseControllerImpl<Serie, SerieServiceImpl>
          try{
             servicio.removeWatchlist(id);
             servicio.removeCat(id);
+            servicio.removeFam(id);
             List<Long> temporadas = servicio.searchBySerieID(id);
             for (Long tempID : temporadas) {
                 temporadaController.delete(tempID);
@@ -85,7 +86,7 @@ public class SerieController extends BaseControllerImpl<Serie, SerieServiceImpl>
          }
      }
 
-     @PostMapping("/addCat")
+    @PostMapping("/addCat")
     public ResponseEntity<?> addCategoria(@RequestParam Long serieID, @RequestParam Long catID){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.addCat(serieID, catID));
@@ -98,6 +99,15 @@ public class SerieController extends BaseControllerImpl<Serie, SerieServiceImpl>
     public ResponseEntity<?> addTemporada(@RequestParam Long serieID, @RequestParam Long temporadaID){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.addTemp(serieID, temporadaID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @PostMapping("/addFam")
+    public ResponseEntity<?> addFamilia(@RequestParam Long serieID, @RequestParam Long famID){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.addFam(serieID, famID));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

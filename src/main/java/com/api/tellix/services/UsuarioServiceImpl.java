@@ -1,16 +1,12 @@
 package com.api.tellix.services;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-
-import com.api.tellix.entities.Perfil;
 import com.api.tellix.entities.Usuario;
 import com.api.tellix.repositories.BaseRepository;
 import com.api.tellix.repositories.UsuarioRepository;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -54,32 +50,51 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
     @Transactional
     public boolean addPerfil(Long usuID, Long perfilID)throws Exception{
         try{
-        boolean resultado;
-        int res = entityManager.createNativeQuery("INSERT INTO perfil_usuario (usuario_id, perfil_id) VALUES (?, ?)")
-        .setParameter(1, usuID)
-        .setParameter(2, perfilID)
-        .executeUpdate();
-        if(res == 1){
-            resultado = true;
-        } else{
-            resultado = false;
+            boolean resultado;
+            int res = entityManager.createNativeQuery("INSERT INTO perfil_usuario (usuario_id, perfil_id) VALUES (?, ?)")
+            .setParameter(1, usuID)
+            .setParameter(2, perfilID)
+            .executeUpdate();
+            if(res == 1){
+                resultado = true;
+            } else{
+                resultado = false;
+            }
+            return resultado;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return resultado;
-    }catch (Exception e) {
-        throw new Exception(e.getMessage());
     }
+
+    @Override
+    @Transactional
+    public boolean removePerfil(Long perfilID)throws Exception{
+        try{
+            boolean resultado;
+            int res = entityManager.createNativeQuery("DELETE FROM perfil_usuario where perfil_id=?")
+            .setParameter(1, perfilID)
+            .executeUpdate();
+            if(res == 1){
+                resultado = true;
+            } else{
+                resultado = false;
+            }
+            return resultado;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
     @Transactional
     public Long crearPerfil(String nombre)throws Exception{
         try{
-        int res = entityManager.createNativeQuery("INSERT INTO perfil (`nombre`) VALUES (?);")
+        entityManager.createNativeQuery("INSERT INTO perfil (`nombre`) VALUES (?);")
         .setParameter(1, nombre)
         .executeUpdate();
         
         Query selectQuery = entityManager.createNativeQuery("SELECT id FROM perfil WHERE id = (SELECT LAST_INSERT_ID());");
-        List<Perfil> resultList = selectQuery.getResultList();
+        selectQuery.getResultList();
 
         Long insertedId = (Long) selectQuery.getSingleResult(); 
 
@@ -146,9 +161,18 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
     @Transactional
     public boolean checkBloq(String mail) throws Exception{
         try{
-            boolean resultado;
             boolean resQuery = usuarioRepository.checkBloq(mail);
-            
+            return resQuery;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean checkSus(String mail) throws Exception{
+        try{
+            boolean resQuery = usuarioRepository.checkSus(mail);
             return resQuery;
         }catch (Exception e) {
             throw new Exception(e.getMessage());

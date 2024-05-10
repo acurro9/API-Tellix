@@ -18,4 +18,6 @@ public interface SerieService extends BaseService<Serie, Long>{
     boolean removeCat(Long serieID) throws Exception;
     boolean addCat(Long peliculaID, Long categoriaID) throws Exception;
     boolean addTemp(Long serieID, Long tempID) throws Exception;
+    boolean removeFam(Long serieID) throws Exception;
+    boolean addFam(Long familiaID, Long serieID)throws Exception;
 }

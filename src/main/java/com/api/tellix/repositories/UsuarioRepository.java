@@ -30,5 +30,11 @@ public interface UsuarioRepository extends BaseRepository <Usuario, Long>{
     )
     boolean checkBloq(String correo);
 
+    @Query(
+        value = "select suscripcion from usuario where correo like :correo",
+        nativeQuery = true
+    )
+    boolean checkSus(String correo);
+
     
 }

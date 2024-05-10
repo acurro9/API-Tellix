@@ -15,4 +15,6 @@ public interface PeliculaService extends BaseService<Pelicula, Long>{
     boolean removeWatchlist(Long peliculaID) throws Exception;
     boolean removeCat(Long peliculaID) throws Exception;
     boolean addCat(Long peliculaID, Long categoriaID) throws Exception;
+    boolean removeFam(Long peliculaID) throws Exception;
+    boolean addFam(Long familiaID, Long peliculaID)throws Exception;
 }

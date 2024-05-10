@@ -34,7 +34,12 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioServic
                 if(checkPass){
                     boolean checkBloq = servicio.checkBloq(mail);
                     if(!checkBloq){
-                        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+                        boolean checkSus = servicio.checkSus(mail);
+                        if(checkSus){
+                            return ResponseEntity.status(HttpStatus.OK).body(usuario);
+                        } else {
+                            return ResponseEntity.status(HttpStatus.OK).body("El usuario introducido no tiene una suscripción válida");
+                        }
                     } else {
                         return ResponseEntity.status(HttpStatus.OK).body("El usuario introducido está bloqueado, por favor pongase en contacto con atención al cliente");
                     }
@@ -75,6 +80,20 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioServic
     public ResponseEntity<?> addPerfil(@RequestParam Long usuID, @RequestParam Long perfilID){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.addPerfil(usuID, perfilID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @PostMapping("/removePerfil")
+    public ResponseEntity<?> removePerfil(@RequestParam Long perfilID){
+        try{
+            boolean resBorrar = servicio.removePerfil(perfilID);
+            if(resBorrar){
+                return ResponseEntity.status(HttpStatus.OK).body(perfilController.delete(perfilID));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body("Error al borrar el perfil");
+            }
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

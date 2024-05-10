@@ -125,6 +125,21 @@ public class SerieServiceImpl extends BaseServiceImpl<Serie, Long> implements Se
 
     @Override
     @Transactional
+    public boolean removeFam(Long serieID) throws Exception {
+        boolean resultado;
+        int res = entityManager.createNativeQuery("DELETE FROM serie_familia WHERE serie_id = ?")
+        .setParameter(1, serieID)
+        .executeUpdate();
+        if(res == 1){
+            resultado = true;
+        } else{
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    @Override
+    @Transactional
     public boolean addCat(Long serieID, Long categoriaID) throws Exception{
         boolean resultado;
         int res = entityManager.createNativeQuery("INSERT INTO serie_categoria (serie_id, categoria_id) VALUES (?, ?)")
@@ -153,5 +168,25 @@ public class SerieServiceImpl extends BaseServiceImpl<Serie, Long> implements Se
             resultado = false;
         }
         return resultado;
+    }
+
+    @Override
+    @Transactional
+    public boolean addFam(Long serieID, Long familiaID)throws Exception{
+        try{
+            boolean resultado;
+            int res = entityManager.createNativeQuery("INSERT INTO serie_familia (serieID, familiaID) VALUES (?, ?)")
+            .setParameter(1, serieID)
+            .setParameter(2, familiaID)
+            .executeUpdate();
+            if(res == 1){
+                resultado = true;
+            } else{
+                resultado = false;
+            }
+            return resultado;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

@@ -60,6 +60,8 @@ public class PeliculaController extends BaseControllerImpl<Pelicula, PeliculaSer
      public ResponseEntity<?> delete(@PathVariable Long id) {
          try{
             servicio.removeWatchlist(id);
+            servicio.removeCat(id);
+            servicio.removeFam(id);
              return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicio.delete(id));
          } catch(Exception e) {
              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
@@ -70,6 +72,14 @@ public class PeliculaController extends BaseControllerImpl<Pelicula, PeliculaSer
     public ResponseEntity<?> addCategoria(@RequestParam Long peliculaID, @RequestParam Long catID){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(servicio.addCat(peliculaID, catID));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+    @PostMapping("/addFam")
+    public ResponseEntity<?> addFamilia(@RequestParam Long peliculaID, @RequestParam Long famID){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.addFam(peliculaID, famID));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
