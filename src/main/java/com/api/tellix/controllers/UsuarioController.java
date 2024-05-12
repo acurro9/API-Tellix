@@ -99,19 +99,23 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioServic
         }
     }
 
-     @PostMapping("/bloq")
-    public ResponseEntity<?> changeBloq(@RequestParam Long usuID, @RequestParam boolean bloqStatus){
+     @PostMapping("/bloq/{id}")
+    public ResponseEntity<?> changeBloq(@PathVariable Long id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(servicio.bloqUsu(usuID, bloqStatus));
+            Usuario usuario = servicio.findById(id);
+            boolean bloqueado = usuario.isBloqueado();
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.bloqUsu(id, !bloqueado));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
     }
 
-    @PostMapping("/suscription")
-    public ResponseEntity<?> changeSus(@RequestParam Long usuID, @RequestParam boolean susStatus){
+    @PostMapping("/suscription/{id}")
+    public ResponseEntity<?> changeSus(@PathVariable Long id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(servicio.suscripcion(usuID, susStatus));
+            Usuario usuario = servicio.findById(id);
+            boolean suscripcion = usuario.isSuscripcion();
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.suscripcion(id, !suscripcion));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }

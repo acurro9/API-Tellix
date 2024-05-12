@@ -2,6 +2,8 @@ package com.api.tellix.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.api.tellix.entities.Pelicula;
 import com.api.tellix.entities.Perfil;
 import java.util.List;
 
@@ -24,4 +26,17 @@ public interface PerfilRepository extends BaseRepository <Perfil, Long>{
         nativeQuery = true
     )
     boolean addPelicula(Long perfilID, Long peliculaID);
+
+    @Query(
+        value = "select * from pelicula where id in (select pelicula_id from watchlist_pelicula where perfil_id = :perfilID)",
+        nativeQuery = true
+    )
+    List<Pelicula> searchFilms(Long perfilID);
+
+    @Query(
+        value = "select * from serie where id in (select serie_id from watchlist_serie where perfil_id = :perfilID)",
+        nativeQuery = true
+    )
+    List<Pelicula> searchSeries(Long perfilID);
+
 }
