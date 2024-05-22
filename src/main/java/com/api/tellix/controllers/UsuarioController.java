@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +55,49 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioServic
         }
     }
 
+    @GetMapping("/admin/login")
+    public ResponseEntity<?> loginAdmin(@RequestParam String mail, @RequestParam String password){
+        try{
+            boolean existsCorreo = servicio.existsByCorreo(mail);
+            if(existsCorreo){
+                Usuario usuario = servicio.obtainUsu(mail);
+                boolean checkPass = servicio.verifyPassword(password, usuario.getContraseña());
+                if(checkPass){
+                    boolean checkBloq = servicio.checkBloq(mail);
+                    if(!checkBloq){
+                        boolean checkSus = servicio.checkSus(mail);
+                        if(checkSus){
+                            if(usuario.isAdmin()){
+                                return ResponseEntity.status(HttpStatus.OK).body(true);
+                            } else {
+                                return ResponseEntity.status(HttpStatus.OK).body("El usuario introducido no es administrador");
+                            }
+                        } else {
+                            return ResponseEntity.status(HttpStatus.OK).body("El usuario introducido no tiene una suscripción válida");
+                        }
+                    } else {
+                        return ResponseEntity.status(HttpStatus.OK).body("El usuario introducido está bloqueado, por favor pongase en contacto con atención al cliente");
+                    }
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body("La contraseña es incorrecta");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body("El correo introducido no existe");
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
+    @GetMapping("/mail/{mail}")
+    public ResponseEntity<?> searchByCorreo(@PathVariable String mail){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.searchByCorreo(mail));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
+        }
+    }
+
     @PostMapping("/")
      public ResponseEntity<?> save(@RequestBody Usuario entity) {
          try{
@@ -71,6 +115,19 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioServic
                 return ResponseEntity.status(HttpStatus.OK).body("El correo introducido ya existe");
             }
             
+         } catch(Exception e) {
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+         }
+     }
+
+     @PutMapping("/{id}")
+     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Usuario entity) {
+         try{
+            String password = entity.getContraseña();
+            Usuario usuario = servicio.findById(id);
+                String hashPass = servicio.encryptPassword(password);
+                entity.setContraseña(hashPass);
+             return ResponseEntity.status(HttpStatus.OK).body(servicio.update(id, entity));
          } catch(Exception e) {
              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
          }

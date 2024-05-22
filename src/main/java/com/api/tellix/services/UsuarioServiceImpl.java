@@ -48,6 +48,17 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
 
     @Override
     @Transactional
+    public Usuario searchByCorreo(String mail) throws Exception{
+        try{
+            Usuario resQuery = usuarioRepository.searchByCorreo(mail);
+            return resQuery;
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
     public boolean addPerfil(Long usuID, Long perfilID)throws Exception{
         try{
             boolean resultado;
@@ -89,7 +100,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
     @Transactional
     public Long crearPerfil(String nombre)throws Exception{
         try{
-        entityManager.createNativeQuery("INSERT INTO perfil (`nombre`) VALUES (?);")
+        entityManager.createNativeQuery("INSERT INTO perfil (`nombre`, `imagen`) VALUES (?, 'foto0');")
         .setParameter(1, nombre)
         .executeUpdate();
         

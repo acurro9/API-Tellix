@@ -6,6 +6,7 @@ import com.api.tellix.entities.Usuario;
 public interface UsuarioService extends BaseService<Usuario, Long>{
     boolean existsByCorreo(String filtro) throws Exception;
     List<Long> searchByUsuID(Long filtro) throws Exception; 
+    Usuario searchByCorreo(String mail) throws Exception;
     boolean addPerfil(Long usuID, Long perfilID) throws Exception;
     Long crearPerfil(String nombre) throws Exception;
     boolean bloqUsu(Long id, boolean bloq) throws Exception;
