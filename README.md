@@ -91,7 +91,7 @@
 - bloq: http://127.0.0.1:5000/api/tellix/usuarios/bloq?usuID=11&bloqStatus=true
 - suscription: http://127.0.0.1:5000/api/tellix/usuarios/suscription?usuID=2&susStatus=true
 
-## Family
+## Familias (Grupos de películas)
 
 - getAll: http://127.0.0.1:5000/api/tellix/familias/
 - getAll paged: http://127.0.0.1:5000/api/tellix/familias/paged?page=0&size=2&sort=id,asc
